@@ -116,28 +116,28 @@
 
   <div class="contact-card">
     <h3 data-i18n="formLabel">Send a Message</h3>
-    <form class="form-section" action="https://formspree.io/f/FORM_ID" method="POST">
+    <form class="form-section" id="contact-form">
       <div class="form-group">
         <label data-i18n="nameLabel">Name</label>
-        <input type="text" name="name" required>
+        <input type="text" id="cf-name" required>
       </div>
       <div class="form-group">
         <label data-i18n="emailFieldLabel">Email</label>
-        <input type="email" name="email" required>
+        <input type="email" id="cf-email" required>
       </div>
       <div class="form-group">
         <label data-i18n="subjectLabel">Subject</label>
-        <select name="subject">
-          <option value="general" data-i18n="optGeneral">General Inquiry</option>
-          <option value="partnership" data-i18n="optPartnership">Partnership / Business</option>
-          <option value="api" data-i18n="optApi">API Access</option>
-          <option value="bug" data-i18n="optBug">Bug Report</option>
-          <option value="other" data-i18n="optOther">Other</option>
+        <select id="cf-subject">
+          <option value="General Inquiry" data-i18n="optGeneral">General Inquiry</option>
+          <option value="Partnership / Business" data-i18n="optPartnership">Partnership / Business</option>
+          <option value="API Access" data-i18n="optApi">API Access</option>
+          <option value="Bug Report" data-i18n="optBug">Bug Report</option>
+          <option value="Other" data-i18n="optOther">Other</option>
         </select>
       </div>
       <div class="form-group">
         <label data-i18n="messageLabel">Message</label>
-        <textarea name="message" required></textarea>
+        <textarea id="cf-message" required></textarea>
       </div>
       <button type="submit" class="submit-btn" data-i18n="sendBtn">SEND MESSAGE →</button>
     </form>
@@ -187,6 +187,16 @@ function setLang(lang){
 document.getElementById('lang-current').addEventListener('click',()=>{document.getElementById('lang-dropdown').classList.toggle('open');});
 document.querySelectorAll('.lang-option').forEach(opt=>{opt.addEventListener('click',()=>{setLang(opt.dataset.lang);document.getElementById('lang-dropdown').classList.remove('open');});});
 document.addEventListener('click',e=>{if(!e.target.closest('.lang-selector'))document.getElementById('lang-dropdown').classList.remove('open');});
+
+document.getElementById('contact-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('cf-name').value;
+  const email = document.getElementById('cf-email').value;
+  const subject = document.getElementById('cf-subject').value;
+  const message = document.getElementById('cf-message').value;
+  const body = 'From: ' + name + ' (' + email + ')\n\n' + message;
+  window.location.href = 'mailto:hello@orbitsmith.net?subject=' + encodeURIComponent('[OrbitSmith] ' + subject) + '&body=' + encodeURIComponent(body);
+});
 </script>
 
 </body>
