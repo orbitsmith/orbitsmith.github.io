@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — OrbitSmith</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Orbitron:wght@400;700&family=Outfit:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#06080f;color:#c8cdd8;font-family:'Outfit','Noto Sans JP',sans-serif;font-weight:300;line-height:1.7;min-height:100vh;}
+  .nav{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:100;background:rgba(6,8,15,0.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.04);}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .logo-icon{width:28px;height:28px;}
+  .logo-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:3px;color:#fff;}
+  .logo-text span{color:#00e5ff;}
+  .nav-links{display:flex;align-items:center;gap:12px;}
+  .nav-link{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);text-decoration:none;padding:4px 8px;border:1px solid rgba(255,255,255,0.08);border-radius:4px;transition:all 0.2s;}
+  .nav-link:hover{color:#00e5ff;border-color:rgba(0,229,255,0.3);}
+  .nav-link.active{color:#00e5ff;border-color:rgba(0,229,255,0.25);}
+  .lang-selector{position:relative;}
+  .lang-current{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.45);cursor:pointer;padding:4px 8px;border:1px solid rgba(255,255,255,0.08);border-radius:4px;transition:all 0.2s;}
+  .lang-current:hover{color:#00e5ff;border-color:rgba(0,229,255,0.3);}
+  .lang-dropdown{display:none;position:absolute;top:28px;right:0;background:rgba(10,14,26,0.96);border:1px solid rgba(0,229,255,0.12);border-radius:6px;overflow:hidden;min-width:120px;backdrop-filter:blur(12px);z-index:200;}
+  .lang-dropdown.open{display:block;}
+  .lang-option{padding:8px 12px;font-size:11px;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.15s;}
+  .lang-option:hover{background:rgba(0,229,255,0.06);color:#fff;}
+  .lang-option.active{color:#00e5ff;}
+  .hero{padding:100px 28px 60px;max-width:880px;margin:0 auto;display:flex;gap:40px;align-items:center;}
+  .hero-photo{width:160px;height:160px;border-radius:50%;border:3px solid rgba(0,229,255,0.2);overflow:hidden;flex-shrink:0;}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;}
+  .hero-info h1{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:4px;}
+  .hero-info .title{font-size:13px;color:#00e5ff;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+  .hero-info .tagline{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.7;max-width:520px;}
+  .content{max-width:880px;margin:0 auto;padding:0 28px 80px;}
+  .section{margin-bottom:48px;}
+  .section-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(0,229,255,0.5);margin-bottom:16px;}
+  .bio{padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:12px;margin-bottom:48px;font-size:13.5px;color:rgba(255,255,255,0.55);line-height:1.85;}
+  .timeline{position:relative;padding-left:24px;}
+  .timeline::before{content:'';position:absolute;left:5px;top:8px;bottom:8px;width:1px;background:rgba(0,229,255,0.12);}
+  .tl-item{position:relative;margin-bottom:28px;}
+  .tl-item::before{content:'';position:absolute;left:-24px;top:8px;width:11px;height:11px;border-radius:50%;border:2px solid rgba(0,229,255,0.3);background:#06080f;}
+  .tl-item.active::before{background:#00e5ff;border-color:#00e5ff;}
+  .tl-years{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;margin-bottom:2px;}
+  .tl-role{font-size:15px;font-weight:600;color:#fff;margin-bottom:1px;}
+  .tl-org{font-size:13px;color:rgba(0,229,255,0.7);margin-bottom:6px;}
+  .tl-desc{font-size:12.5px;color:rgba(255,255,255,0.45);line-height:1.65;}
+  .awards{display:flex;flex-direction:column;gap:16px;}
+  .award-card{display:flex;gap:14px;padding:16px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;transition:border-color 0.2s;}
+  .award-card:hover{border-color:rgba(0,229,255,0.15);}
+  .award-icon{font-size:22px;flex-shrink:0;line-height:1;}
+  .award-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+  .award-detail{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5;}
+  .social-links{display:flex;gap:12px;flex-wrap:wrap;}
+  .social-link{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(0,229,255,0.6);text-decoration:none;padding:8px 14px;border:1px solid rgba(0,229,255,0.15);border-radius:6px;transition:all 0.2s;}
+  .social-link:hover{color:#00e5ff;border-color:#00e5ff;background:rgba(0,229,255,0.05);}
+  .footer{text-align:center;padding:24px;font-size:9px;color:rgba(255,255,255,0.2);letter-spacing:1px;border-top:1px solid rgba(255,255,255,0.04);}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <a href="index.html" class="logo">
+    <svg class="logo-icon" width="28" height="28" viewBox="0 0 512 512" fill="none"><circle cx="256" cy="256" r="120" stroke="#00e5ff" stroke-width="12" fill="none"/><ellipse cx="256" cy="256" rx="160" ry="56" transform="rotate(-30 256 256)" stroke="rgba(0,229,255,0.6)" stroke-width="14" fill="none"/><circle cx="256" cy="256" r="32" fill="#00e5ff"/></svg>
+    <div class="logo-text">ORBIT<span>SMITH</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">TRACKER</a>
+    <a href="about.html" class="nav-link active">ABOUT</a>
+    <div class="lang-selector">
+      <div class="lang-current" id="lang-current">EN</div>
+      <div class="lang-dropdown" id="lang-dropdown">
+        <div class="lang-option active" data-lang="en">🇺🇸 English</div>
+        <div class="lang-option" data-lang="ja">🇯🇵 日本語</div>
+        <div class="lang-option" data-lang="zh">🇨🇳 中文</div>
+        <div class="lang-option" data-lang="es">🇪🇸 Español</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-photo">
+    <img src="data:image/jpeg;base64,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" alt="Seita Iizuka">
+  </div>
+  <div class="hero-info">
+    <h1 data-i18n="heroName">SEITA IIZUKA</h1>
+    <div class="title">Founder</div>
+    <div class="tagline" data-i18n="tagline">Engineer / Program Manager / Executive. 13+ years in deep tech — from rocket range control to debris removal to laser fusion.</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <div class="section">
+    <div class="section-label" data-i18n="bioLabel">Bio</div>
+    <div class="bio" data-i18n="bio">Growing up with a dream of reaching space, I started my career in the space industry at JAXA. While serving as a Range Control Officer for rocket launches, I witnessed firsthand how spent upper stages become orbital debris — sparking a deep awareness of the space debris problem. This led me to join Astroscale, where I gained hands-on engineering experience across multiple subsystems including communications, propulsion, and ground systems, before taking on the role of ELSA-d Program Manager. I led this tri-national project spanning Japan, the UK, and the US to a successful in-orbit demonstration, earning multiple industry awards. Today, I bring my experience managing complex international engineering programs to Blue Laser Fusion, where I serve as VP of Operations, working toward making laser fusion energy a reality. On weekends, you'll find me running around the Imperial Palace.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label" data-i18n="expLabel">Experience</div>
+    <div class="timeline">
+      <div class="tl-item active">
+        <div class="tl-years">2023 — PRESENT</div>
+        <div class="tl-role">VP of Operations / Head of Japan Business</div>
+        <div class="tl-org">Blue Laser Fusion Inc.</div>
+        <div class="tl-desc" data-i18n="descBLF">Leading operations and cross-border R&D programs for laser fusion energy technology, with a focus on high-power laser systems. Coordinating between U.S. and Japan entities, engaging with government agencies, universities, and research institutions.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-years">2017 — 2024</div>
+        <div class="tl-role">VP of Programs / ELSA-d Program Manager</div>
+        <div class="tl-org">Astroscale Japan Inc.</div>
+        <div class="tl-desc" data-i18n="descASC">Directed Program Management, QA, Production, Procurement, and Ground Station teams. Program Manager for ELSA-d — the world's first commercial mission to demonstrate space debris docking and removal in orbit. Led a tri-national team across Japan, the US, and the UK from development through successful in-orbit demonstration.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-years">2013 — 2016</div>
+        <div class="tl-role" data-i18n="roleJAXA">Engineer, Space Transportation Technology Directorate</div>
+        <div class="tl-org">JAXA — Japan Aerospace Exploration Agency</div>
+        <div class="tl-desc" data-i18n="descJAXA">Range Control Officer for 11 rocket launches, directing 100+ operators during mission-critical tracking operations at Tanegashima and Uchinoura Space Centers. The experience of seeing spent upper stages become orbital debris after every launch was the catalyst for a career dedicated to solving the space debris problem.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label" data-i18n="eduLabel">Education</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-years">2013</div>
+        <div class="tl-role" data-i18n="eduDegree">B.Eng., Electronics and Information Engineering</div>
+        <div class="tl-org" data-i18n="eduSchool">The University of Osaka</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label" data-i18n="awardLabel">Awards</div>
+    <div class="awards">
+      <div class="award-card">
+        <div class="award-icon">🏆</div>
+        <div>
+          <div class="award-name" data-i18n="award1Name">Minister of State for Space Policy Award</div>
+          <div class="award-detail" data-i18n="award1Detail">5th Japan Space Development & Utilization Awards — Cabinet Office, Government of Japan<br>For "ELSA-d: On-Orbit Demonstration of Space Debris Proximity and Capture"</div>
+        </div>
+      </div>
+      <div class="award-card">
+        <div class="award-icon">🏆</div>
+        <div>
+          <div class="award-name" data-i18n="award2Name">Satellite Technology of the Year 2021</div>
+          <div class="award-detail" data-i18n="award2Detail">Via Satellite — Awarded to ELSA-d at SATELLITE 2022 Conference, Washington D.C.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label" data-i18n="connectLabel">Connect</div>
+    <div class="social-links">
+      <a href="https://x.com/iizukaseita" target="_blank" rel="noopener" class="social-link">𝕏 @iizukaseita</a>
+      <a href="https://www.linkedin.com/in/seita-iizuka/" target="_blank" rel="noopener" class="social-link">LinkedIn</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">© 2026 OrbitSmith. All rights reserved.</div>
+
+<script>
+const i18n = {
+  en: {
+    heroName: "SEITA IIZUKA",
+    tagline: "Engineer / Program Manager / Executive. 13+ years in deep tech — from rocket range control to debris removal to laser fusion.",
+    bioLabel: "Bio",
+    bio: "Growing up with a dream of reaching space, I started my career in the space industry at JAXA. While serving as a Range Control Officer for rocket launches, I witnessed firsthand how spent upper stages become orbital debris — sparking a deep awareness of the space debris problem. This led me to join Astroscale, where I gained hands-on engineering experience across multiple subsystems including communications, propulsion, and ground systems, before taking on the role of ELSA-d Program Manager. I led this tri-national project spanning Japan, the UK, and the US to a successful in-orbit demonstration, earning multiple industry awards. Today, I bring my experience managing complex international engineering programs to Blue Laser Fusion, where I serve as VP of Operations, working toward making laser fusion energy a reality. On weekends, you'll find me running around the Imperial Palace.",
+    expLabel: "Experience",
+    descBLF: "Leading operations and cross-border R&D programs for laser fusion energy technology, with a focus on high-power laser systems. Coordinating between U.S. and Japan entities, engaging with government agencies, universities, and research institutions.",
+    descASC: "Directed Program Management, QA, Production, Procurement, and Ground Station teams. Program Manager for ELSA-d — the world's first commercial mission to demonstrate space debris docking and removal in orbit. Led a tri-national team across Japan, the US, and the UK from development through successful in-orbit demonstration.",
+    roleJAXA: "Engineer, Space Transportation Technology Directorate",
+    descJAXA: "Range Control Officer for 11 rocket launches, directing 100+ operators during mission-critical tracking operations at Tanegashima and Uchinoura Space Centers. The experience of seeing spent upper stages become orbital debris after every launch was the catalyst for a career dedicated to solving the space debris problem.",
+    eduLabel: "Education",
+    eduDegree: "B.Eng., Electronics and Information Engineering",
+    eduSchool: "The University of Osaka",
+    awardLabel: "Awards",
+    award1Name: "Minister of State for Space Policy Award",
+    award1Detail: 'Fifth Japan Space Development & Utilization Awards — Cabinet Office, Government of Japan<br>For "ELSA-d: On-Orbit Demonstration of Space Debris Proximity and Capture"',
+    award2Name: "Satellite Technology of the Year 2021",
+    award2Detail: "Via Satellite — Awarded to ELSA-d at SATELLITE 2022 Conference, Washington D.C.",
+    connectLabel: "Connect"
+  },
+  ja: {
+    heroName: "飯塚 清太",
+    tagline: "エンジニア / プログラムマネージャー / エグゼクティブ。13年以上のディープテック領域での経験 — ロケット射場管制からデブリ除去、レーザー核融合まで。",
+    bioLabel: "経歴",
+    bio: "幼い頃から宇宙に憧れ、JAXAにて宇宙業界でキャリアをスタートする。ロケット打ち上げのRange Control Officerを務める中、打ち上げ後のロケット上段が宇宙デブリとなっている現実を目の当たりにし、デブリ問題を強く意識する。これをきっかけにAstroscaleに入社。通信、推進、地上系など複数サブシステムでのエンジニア経験を経て、ELSA-dプログラムマネージャーに就任。日本・英国・米国にまたがるプロジェクトを成功に導き、複数の受賞に至る。現在は、国際チームを率いて複雑なエンジニアリングプロジェクトを推進してきた経験を活かし、レーザー核融合発電の実現を目指すBlue Laser Fusionにて、VP of Operationsとして日々開発に邁進している。趣味は皇居ラン。",
+    expLabel: "経験",
+    descBLF: "レーザー核融合エネルギー技術の開発をリード。高出力レーザーシステムを中心に、日米間のクロスボーダーR&Dプログラムを統括。政府機関、大学、研究機関等との連携を推進。",
+    descASC: "プログラムマネジメント、品質保証、製造、調達、地上局チームを統括。ELSA-dプログラムマネージャーとして、世界初の商業スペースデブリ除去実証ミッションを担当。日・英・米にまたがるチームを率い、開発から軌道上実証成功まで導く。",
+    roleJAXA: "エンジニア、宇宙輸送技術部門",
+    descJAXA: "11機のロケット打ち上げにおいてRange Control Officerを務め、種子島・内之浦宇宙空間観測所にてミッションクリティカルな追跡管制運用で100名以上のオペレーターを指揮。打ち上げの度にロケット上段が軌道上デブリとなる現実を目の当たりにした経験が、デブリ問題解決に捧げるキャリアの原点となる。",
+    eduLabel: "学歴",
+    eduDegree: "電子情報工学科 学士（工学）",
+    eduSchool: "大阪大学",
+    awardLabel: "受賞",
+    award1Name: "内閣府特命担当大臣（宇宙政策）賞",
+    award1Detail: '第5回 宇宙開発利用大賞 — 内閣府<br>「ELSA-dによるスペースデブリへの接近・捕獲の軌道上実証」',
+    award2Name: "Satellite Technology of the Year 2021",
+    award2Detail: "Via Satellite — SATELLITE 2022 Conference（ワシントンD.C.）にてELSA-dが受賞",
+    connectLabel: "つながる"
+  },
+  zh: {
+    heroName: "饭冢 清太",
+    tagline: "工程师 / 项目经理 / 高管。13年以上深科技领域经验 — 从火箭发射控制到太空碎片清除，再到激光聚变。",
+    bioLabel: "简历",
+    bio: "自幼怀揣太空梦想，在JAXA开启了航天行业的职业生涯。在担任火箭发射Range Control Officer期间，亲眼目睹火箭上面级在发射后成为太空碎片，由此对太空碎片问题产生了深刻认识。这促使我加入Astroscale，在通信、推进、地面系统等多个子系统积累了工程经验后，出任ELSA-d项目经理。我带领横跨日本、英国和美国的团队成功完成在轨演示，获得多项行业奖项。如今，我将管理复杂国际工程项目的经验带到Blue Laser Fusion，担任运营副总裁，致力于实现激光聚变能源。周末时光，我喜欢绕皇居跑步。",
+    expLabel: "经历",
+    descBLF: "主导激光聚变能源技术开发运营及跨境研发项目，重点关注高功率激光系统。协调美日两国团队，与政府机构、大学及科研院所开展合作。",
+    descASC: "统管项目管理、质量保证、生产、采购和地面站团队。作为ELSA-d项目经理，负责全球首个商业太空碎片清除在轨演示任务。率领日、英、美三国团队从开发到在轨演示全程推进。",
+    roleJAXA: "工程师，宇宙运输技术部门",
+    descJAXA: "在11次火箭发射中担任Range Control Officer，在种子岛和内之浦航天中心指挥100余名操作员执行关键跟踪管控任务。每次发射后亲眼看到火箭上面级成为轨道碎片的经历，成为投身解决太空碎片问题事业的起点。",
+    eduLabel: "教育",
+    eduDegree: "电子信息工程 工学学士",
+    eduSchool: "大阪大学",
+    awardLabel: "获奖",
+    award1Name: "内阁府特命担当大臣（宇宙政策）奖",
+    award1Detail: '第五届日本宇宙开发利用大奖 — 内阁府<br>"ELSA-d太空碎片接近与捕获在轨演示"',
+    award2Name: "2021年度卫星技术奖",
+    award2Detail: "Via Satellite — 在SATELLITE 2022大会（华盛顿D.C.）上授予ELSA-d",
+    connectLabel: "联系"
+  },
+  es: {
+    heroName: "SEITA IIZUKA",
+    tagline: "Ingeniero / Director de Programas / Ejecutivo. Más de 13 años en deep tech — desde control de lanzamiento de cohetes hasta eliminación de basura espacial y fusión láser.",
+    bioLabel: "Biografía",
+    bio: "Desde pequeño soñaba con llegar al espacio. Comencé mi carrera en la industria espacial en JAXA. Mientras servía como Range Control Officer para lanzamientos de cohetes, presencié de primera mano cómo las etapas superiores gastadas se convierten en basura orbital, lo que despertó una profunda conciencia del problema de los desechos espaciales. Esto me llevó a unirme a Astroscale, donde adquirí experiencia práctica en ingeniería en múltiples subsistemas, incluyendo comunicaciones, propulsión y sistemas terrestres, antes de asumir el rol de Director del Programa ELSA-d. Lideré este proyecto trinacional entre Japón, Reino Unido y Estados Unidos hasta una exitosa demostración en órbita, obteniendo múltiples premios de la industria. Hoy, aporto mi experiencia gestionando programas internacionales complejos de ingeniería a Blue Laser Fusion, donde me desempeño como VP de Operaciones, trabajando para hacer realidad la energía de fusión láser. Los fines de semana, me encontrarás corriendo alrededor del Palacio Imperial.",
+    expLabel: "Experiencia",
+    descBLF: "Liderando operaciones y programas de I+D transfronterizos para tecnología de energía de fusión láser, con enfoque en sistemas láser de alta potencia. Coordinando entre entidades de EE.UU. y Japón, colaborando con agencias gubernamentales, universidades e instituciones de investigación.",
+    descASC: "Dirigí los equipos de Gestión de Programas, QA, Producción, Adquisiciones y Estaciones Terrestres. Director del Programa ELSA-d — la primera misión comercial del mundo en demostrar acoplamiento y eliminación de basura espacial en órbita. Lideré un equipo trinacional de Japón, EE.UU. y Reino Unido desde el desarrollo hasta la demostración exitosa en órbita.",
+    roleJAXA: "Ingeniero, Dirección de Tecnología de Transporte Espacial",
+    descJAXA: "Range Control Officer para 11 lanzamientos de cohetes, dirigiendo a más de 100 operadores durante operaciones críticas de seguimiento en los centros espaciales de Tanegashima y Uchinoura. La experiencia de ver cómo las etapas superiores se convertían en basura orbital tras cada lanzamiento fue el catalizador de una carrera dedicada a resolver el problema de los desechos espaciales.",
+    eduLabel: "Educación",
+    eduDegree: "Ing., Ingeniería Electrónica y de Información",
+    eduSchool: "Universidad de Osaka",
+    awardLabel: "Premios",
+    award1Name: "Premio del Ministro de Estado para Política Espacial",
+    award1Detail: '5º Premios de Desarrollo y Utilización Espacial de Japón — Oficina del Gabinete, Gobierno de Japón<br>Por "ELSA-d: Demostración en Órbita de Proximidad y Captura de Basura Espacial"',
+    award2Name: "Tecnología Satelital del Año 2021",
+    award2Detail: "Via Satellite — Otorgado a ELSA-d en la Conferencia SATELLITE 2022, Washington D.C.",
+    connectLabel: "Contacto"
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const strings = i18n[lang];
+  if (!strings) return;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (strings[key] !== undefined) {
+      if (strings[key].includes('<br>')) {
+        el.innerHTML = strings[key];
+      } else {
+        el.textContent = strings[key];
+      }
+    }
+  });
+  document.getElementById('lang-current').textContent = lang.toUpperCase();
+  document.querySelectorAll('.lang-option').forEach(o => {
+    o.classList.toggle('active', o.dataset.lang === lang);
+  });
+  document.documentElement.lang = lang;
+}
+
+document.getElementById('lang-current').addEventListener('click', () => {
+  document.getElementById('lang-dropdown').classList.toggle('open');
+});
+document.querySelectorAll('.lang-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    setLang(opt.dataset.lang);
+    document.getElementById('lang-dropdown').classList.remove('open');
+  });
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('.lang-selector')) {
+    document.getElementById('lang-dropdown').classList.remove('open');
+  }
+});
+</script>
+
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_CF_TOKEN"}'></script>
+</body>
+</html>
