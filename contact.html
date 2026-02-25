@@ -192,26 +192,19 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
   e.preventDefault();
   const name = document.getElementById('cf-name').value;
   const email = document.getElementById('cf-email').value;
-  const subject = document.getElementById('cf-subject').value;
+  const subject = '[OrbitSmith] ' + document.getElementById('cf-subject').value;
   const message = document.getElementById('cf-message').value;
   const body = 'From: ' + name + ' (' + email + ')\n\n' + message;
-  const full = 'To: hello@orbitsmith.net\nSubject: [OrbitSmith] ' + subject + '\n\n' + body;
   
-  // Try mailto via window.open
-  const mailtoUrl = 'mailto:hello@orbitsmith.net?subject=' + encodeURIComponent('[OrbitSmith] ' + subject) + '&body=' + encodeURIComponent(body);
-  const w = window.open(mailtoUrl, '_self');
+  // Open Gmail compose in new tab
+  const gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=hello@orbitsmith.net&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  window.open(gmailUrl, '_blank');
   
-  // Also copy to clipboard as fallback
-  navigator.clipboard.writeText(full).then(function(){
-    const btn = document.querySelector('.submit-btn');
-    const orig = btn.textContent;
-    btn.textContent = '✓ COPIED TO CLIPBOARD — PASTE INTO YOUR EMAIL';
-    btn.style.color = '#0f0';
-    btn.style.borderColor = '#0f0';
-    setTimeout(function(){ btn.textContent = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 4000);
-  }).catch(function(){
-    window.location.href = mailtoUrl;
-  });
+  const btn = document.querySelector('.submit-btn');
+  btn.textContent = '✓ GMAIL OPENED — CHECK NEW TAB';
+  btn.style.color = '#0f0';
+  btn.style.borderColor = '#0f0';
+  setTimeout(function(){ btn.textContent = 'SEND MESSAGE →'; btn.style.color = ''; btn.style.borderColor = ''; }, 4000);
 });
 </script>
 
