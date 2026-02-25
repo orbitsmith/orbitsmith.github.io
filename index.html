@@ -124,6 +124,39 @@
   .nav-link{font-family:'IBM Plex Mono','Noto Sans JP',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);text-decoration:none;padding:4px 8px;border:1px solid rgba(255,255,255,0.08);border-radius:4px;transition:all 0.2s;}
   .nav-link:hover{color:#00e5ff;border-color:rgba(0,229,255,0.3);}
   .nav-link.active{color:#00e5ff;border-color:rgba(0,229,255,0.25);}
+
+  /* MOBILE RESPONSIVE */
+  @media(max-width:900px){
+    #canvas-container{position:relative!important;width:100%;height:50vh;min-height:300px;}
+    .side-panel{position:relative;top:auto;left:auto;width:100%;max-height:none;padding:8px 12px;gap:8px;}
+    .right-panel{position:relative;top:auto;right:auto;width:100%;max-height:none;padding:8px 12px;gap:8px;}
+    .top-bar{padding:0 12px;z-index:200;}
+    .logo-text{font-size:12px;letter-spacing:2px;}
+    .top-status .time-display{font-size:9px;}
+    .bottom-bar{position:relative;flex-wrap:wrap;height:auto;padding:8px 12px;gap:4px;}
+    .filter-btn{font-size:7px;padding:4px 6px;}
+    .alerts-container{position:relative;left:auto;right:auto;bottom:auto;padding:6px 12px;}
+    .disclaimer{position:relative;bottom:auto;left:auto;max-width:100%;padding:8px 12px;}
+    body{overflow-y:auto;padding-top:52px;}
+  }
+  @media(max-width:600px){
+    .top-bar{height:44px;padding:0 10px;}
+    .nav-link{font-size:7px;padding:3px 5px;letter-spacing:1px;}
+    .top-right{gap:6px;}
+    .lang-current{font-size:8px;padding:3px 5px;}
+    .top-status{display:none;}
+    .side-panel,.right-panel{padding:6px 10px;}
+    .panel-card{padding:10px 12px;}
+    .panel-value{font-size:22px;}
+    .panel-label span:first-child{font-size:8px;}
+    .panel-sub{font-size:8px;}
+    #canvas-container{height:40vh;min-height:250px;}
+    .calc-panel input,.calc-panel select{font-size:11px;padding:6px 8px;}
+    .filter-btn{font-size:6.5px;padding:3px 5px;}
+    .ticker-track{font-size:9px;}
+    body{padding-top:44px;}
+  }
+
 </style>
 </head>
 <body>
@@ -140,6 +173,7 @@
   <div class="top-right">
     <a href="index.html" class="nav-link active">TRACKER</a>
     <a href="about.html" class="nav-link">ABOUT</a>
+    <a href="contact.html" class="nav-link">CONTACT</a>
     <div class="lang-selector">
       <div class="lang-current" id="lang-current">EN</div>
       <div class="lang-dropdown" id="lang-dropdown">
@@ -570,7 +604,7 @@ function animate(){requestAnimationFrame(animate);const dt=clock.getDelta();eart
 
 function animateCounter(el,target,dur){const st=performance.now(),init=parseInt(el.textContent.replace(/,/g,''))||0;function u(now){const p=Math.min((now-st)/dur,1);el.textContent=Math.floor(init+(target-init)*(1-Math.pow(1-p,3))).toLocaleString();if(p<1)requestAnimationFrame(u);}requestAnimationFrame(u);}
 function uTime(){document.getElementById('utc-time').textContent=new Date().toISOString().replace('T',' ').substring(0,19)+' UTC';}
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+addEventListener('resize',()=>{const c=document.getElementById('canvas-container');const w=c.clientWidth||innerWidth;const h=c.clientHeight||innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);});
 
 // ===== GLOBAL TOOLTIP SYSTEM =====
 const gtip=document.getElementById('global-tip');
@@ -617,6 +651,7 @@ document.querySelectorAll('.has-tip').forEach(ht=>{
 
 uCam();animate();
 setTimeout(()=>{document.getElementById('loading').classList.add('fade-out');
+  window.dispatchEvent(new Event('resize'));
   const tot=Object.values(DEBRIS).reduce((s,d)=>s+d.count,0);
   animateCounter(document.getElementById('total-count'),tot,2000);
   animateCounter(document.getElementById('leo-count'),DEBRIS.leo.count,1800);
