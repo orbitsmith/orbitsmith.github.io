@@ -195,7 +195,23 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
   const subject = document.getElementById('cf-subject').value;
   const message = document.getElementById('cf-message').value;
   const body = 'From: ' + name + ' (' + email + ')\n\n' + message;
-  window.location.href = 'mailto:hello@orbitsmith.net?subject=' + encodeURIComponent('[OrbitSmith] ' + subject) + '&body=' + encodeURIComponent(body);
+  const full = 'To: hello@orbitsmith.net\nSubject: [OrbitSmith] ' + subject + '\n\n' + body;
+  
+  // Try mailto via window.open
+  const mailtoUrl = 'mailto:hello@orbitsmith.net?subject=' + encodeURIComponent('[OrbitSmith] ' + subject) + '&body=' + encodeURIComponent(body);
+  const w = window.open(mailtoUrl, '_self');
+  
+  // Also copy to clipboard as fallback
+  navigator.clipboard.writeText(full).then(function(){
+    const btn = document.querySelector('.submit-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ COPIED TO CLIPBOARD — PASTE INTO YOUR EMAIL';
+    btn.style.color = '#0f0';
+    btn.style.borderColor = '#0f0';
+    setTimeout(function(){ btn.textContent = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 4000);
+  }).catch(function(){
+    window.location.href = mailtoUrl;
+  });
 });
 </script>
 
